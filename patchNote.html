@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Patch Note Discord</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #1a1b1e;
+      --bg-card: #25262b;
+      --bg-input: #2c2e33;
+      --border: #373a40;
+      --text: #e8e8ed;
+      --text-muted: #9095a1;
+      --accent: #5865f2;
+      --accent-hover: #4752c4;
+      --green: #3ba55d;
+      --red: #ed4245;
+      --yellow: #faa81a;
+      --radius: 12px;
+      --shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    [data-theme="light"] {
+      --bg: #f2f3f5;
+      --bg-card: #ffffff;
+      --bg-input: #ebedef;
+      --border: #e3e5e8;
+      --text: #2e3338;
+      --text-muted: #747f8d;
+      --accent: #5865f2;
+      --accent-hover: #4752c4;
+      --shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "DM Sans", -apple-system, sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
+      padding: 24px;
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+
+    .container {
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .theme-toggle {
+      background: var(--bg-card);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .theme-toggle:hover {
+      background: var(--bg-input);
+      border-color: var(--text-muted);
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 24px;
+      margin-bottom: 20px;
+      transition: box-shadow 0.2s, border-color 0.2s;
+    }
+
+    .card:focus-within {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(88, 101, 242, 0.2);
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg-input);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 14px;
+      resize: vertical;
+      min-height: 44px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: var(--text-muted);
+      opacity: 0.8;
+    }
+
+    input:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(88, 101, 242, 0.15);
+    }
+
+    textarea {
+      min-height: 100px;
+    }
+
+    .section {
+      margin-bottom: 20px;
+    }
+
+    .section:last-child {
+      margin-bottom: 0;
+    }
+
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .section-label .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .section-label .dot.green { background: var(--green); }
+    .section-label .dot.red { background: var(--red); }
+    .section-label .dot.yellow { background: var(--yellow); }
+
+    .btn-send {
+      width: 100%;
+      padding: 14px 20px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .btn-send:hover {
+      background: var(--accent-hover);
+    }
+
+    .btn-send:active {
+      transform: scale(0.99);
+    }
+
+    .btn-send:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .alert {
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+
+    .alert-error {
+      background: rgba(237, 66, 69, 0.15);
+      border: 1px solid rgba(237, 66, 69, 0.4);
+      color: #ed4245;
+    }
+
+    .alert-success {
+      background: rgba(59, 165, 93, 0.15);
+      border: 1px solid rgba(59, 165, 93, 0.4);
+      color: #3ba55d;
+    }
+
+    .alert-warning {
+      background: rgba(250, 168, 26, 0.15);
+      border: 1px solid rgba(250, 168, 26, 0.4);
+      color: #faa81a;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 32px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Patch Note Discord</h1>
+      <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Changer le thème">
+        <span id="theme-icon">☀️</span>
+        <span id="theme-label">Mode clair</span>
+      </button>
+    </header>
+
+    <div id="alert" class="alert hidden" role="alert"></div>
+
+    <form id="patchnote-form" class="card">
+      <div class="section">
+        <label for="patch_by">Effectué par</label>
+        <input type="text" id="patch_by" placeholder="Ton nom ou pseudo" autocomplete="name">
+      </div>
+
+      <div class="section">
+        <label class="section-label">
+          <span class="dot green"></span>
+          Ajouts
+        </label>
+        <textarea id="ajouts" rows="4" placeholder="Une ligne par ajout"></textarea>
+      </div>
+
+      <div class="section">
+        <label class="section-label">
+          <span class="dot red"></span>
+          Retraits
+        </label>
+        <textarea id="retraits" rows="4" placeholder="Une ligne par retrait"></textarea>
+      </div>
+
+      <div class="section">
+        <label class="section-label">
+          <span class="dot yellow"></span>
+          Fixs
+        </label>
+        <textarea id="fixs" rows="4" placeholder="Une ligne par correction"></textarea>
+      </div>
+
+      <button type="submit" class="btn-send" id="btn-send">Envoyer sur Discord</button>
+      </form>
+
+    <footer>
+      Remplis au moins une section et configure ton webhook dans <code>config.js</code>.
+    </footer>
+  </div>
+
+  <script src="config.js"></script>
+  <script>
+    (function () {
+      const form = document.getElementById("patchnote-form");
+      const alertEl = document.getElementById("alert");
+      const btnSend = document.getElementById("btn-send");
+      const themeToggle = document.getElementById("theme-toggle");
+      const themeIcon = document.getElementById("theme-icon");
+      const themeLabel = document.getElementById("theme-label");
+
+      function showAlert(message, type) {
+        alertEl.textContent = message;
+        alertEl.className = "alert alert-" + type;
+        alertEl.classList.remove("hidden");
+      }
+
+      function hideAlert() {
+        alertEl.classList.add("hidden");
+      }
+
+      function getConfig() {
+        if (typeof window.PATCH_NOTE_CONFIG !== "undefined" && window.PATCH_NOTE_CONFIG.webhookURL) {
+          return window.PATCH_NOTE_CONFIG;
+        }
+        return null;
+      }
+
+      function getTheme() {
+        return document.documentElement.getAttribute("data-theme") || "dark";
+      }
+
+      function setTheme(theme) {
+        document.documentElement.setAttribute("data-theme", theme);
+        if (theme === "light") {
+          themeIcon.textContent = "🌙";
+          themeLabel.textContent = "Mode sombre";
+        } else {
+          themeIcon.textContent = "☀️";
+          themeLabel.textContent = "Mode clair";
+        }
+        try { localStorage.setItem("patch-note-theme", theme); } catch (_) {}
+      }
+
+      themeToggle.addEventListener("click", function () {
+        setTheme(getTheme() === "dark" ? "light" : "dark");
+      });
+
+      try {
+        const saved = localStorage.getItem("patch-note-theme");
+        if (saved === "light") setTheme("light");
+      } catch (_) {}
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        hideAlert();
+
+        const config = getConfig();
+        if (!config) {
+          showAlert("Configure ton webhook : copie config.example.js en config.js et ajoute l’URL du webhook Discord.", "warning");
+          return;
+        }
+
+        const patchBy = document.getElementById("patch_by").value.trim();
+        const ajouts = document.getElementById("ajouts").value.trim();
+        const retraits = document.getElementById("retraits").value.trim();
+        const fixs = document.getElementById("fixs").value.trim();
+
+        if (!ajouts && !retraits && !fixs) {
+          showAlert("Remplis au moins une section (Ajouts, Retraits ou Fixs).", "warning");
+          return;
+        }
+
+        // Couleurs Discord (décimal) : vert, rouge, jaune
+        const colors = { green: 3913373, red: 15548997, yellow: 16426522 };
+        const embeds = [];
+        const footerText = "Mise à jour par " + (patchBy || "l'équipe");
+        const footer = config.footerIconURL
+          ? { text: footerText, icon_url: config.footerIconURL }
+          : { text: footerText };
+
+        if (ajouts) {
+          embeds.push({
+            title: "🟢 Ajouts",
+            color: colors.green,
+            description: ajouts.split("\n").filter(Boolean).map(function (l) { return "**+** " + l; }).join("\n")
+          });
+        }
+        if (retraits) {
+          embeds.push({
+            title: "🔴 Retraits",
+            color: colors.red,
+            description: retraits.split("\n").filter(Boolean).map(function (l) { return "**-** " + l; }).join("\n")
+          });
+        }
+        if (fixs) {
+          embeds.push({
+            title: "🛠️ Fixs",
+            color: colors.yellow,
+            description: fixs.split("\n").filter(Boolean).map(function (l) { return "**•** " + l; }).join("\n")
+          });
+        }
+
+        // Pied de page et miniature uniquement sur le dernier embed
+        if (embeds.length > 0) {
+          embeds[embeds.length - 1].footer = footer;
+          if (config.thumbnailURL) embeds[embeds.length - 1].thumbnail = { url: config.thumbnailURL };
+        }
+
+        const payload = {
+          username: config.username || "Patch Note",
+          avatar_url: config.avatarURL || undefined,
+          embeds: embeds
+        };
+
+        btnSend.disabled = true;
+        fetch(config.webhookURL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        })
+          .then(function (res) {
+            if (res.ok) {
+              showAlert("Patch note envoyé avec succès.", "success");
+              form.reset();
+            } else {
+              showAlert("Erreur Discord (code " + res.status + "). Vérifie l’URL du webhook.", "error");
+            }
+          })
+          .catch(function () {
+            showAlert("Erreur de connexion. Vérifie ton réseau et l’URL du webhook.", "error");
+          })
+          .finally(function () {
+            btnSend.disabled = false;
+          });
+      });
+    })();
+  </script>
+</body>
+</html>
