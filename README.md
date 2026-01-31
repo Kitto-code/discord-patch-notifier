@@ -12,7 +12,5 @@ Ce projet permet de gérer et visualiser des Patchnotes.
 2. Adapter le fichier `config.js` selon vos besoin
 
 ## Utilisation
-Ouvrez `index.html` dans votre navigateur pour accéder à l’application.
+Ouvrez `patchNote.html` dans votre navigateur pour accéder à l’application.
 
-## Contact
-Pour toute question, contactez le mainteneur du projet.
